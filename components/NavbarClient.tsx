@@ -7,10 +7,9 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 type Item = { id: string; label: string };
 
 const items: Item[] = [
-  { id: "home", label: "Home" },
-  { id: "quem-somos", label: "Quem somos" },
-  { id: "catalogo", label: "Catálogo" },
-  { id: "contato", label: "Fale conosco" }
+  { id: "home", label: "Início" },
+  { id: "monte-seu-sistema", label: "Monte Seu Sistema" },
+  { id: "contato", label: "Atendimento Direto" }
 ];
 
 export function NavbarClient() {

@@ -11,15 +11,6 @@ function Pill({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Card({ title, desc }: { title: string; desc: string }) {
-  return (
-    <article className="glass rounded-3xl p-7 transition duration-200 hover:-translate-y-1 hover:border-black/20 dark:hover:border-white/20">
-      <h3 className="text-sm font-extrabold uppercase tracking-[0.12em] text-black/90 dark:text-white">{title}</h3>
-      <p className="mt-3 text-sm leading-relaxed text-black/70 dark:text-white/70">{desc}</p>
-    </article>
-  );
-}
-
 export default function Page() {
   return (
     <div>
@@ -35,17 +26,17 @@ export default function Page() {
                 Empresas prontas para <span className="accent">nascer</span>.
               </h1>
               <p className="mt-5 max-w-xl text-sm leading-relaxed text-black/70 dark:text-white/70 sm:text-base lg:text-lg">
-                A Quality Originals cria conceitos de empresas, identidades visuais e marcas pré-prontas para
-                empreendedores que desejam começar com estrutura, presença e potencial de crescimento.
+                A Quality Originals transforma ideias em estruturas digitais profissionais. Você monta sua base,
+                escolhe estilo, assistência e visualiza o resultado antes de iniciar.
               </p>
 
               <div className="mt-7 grid grid-cols-1 items-start gap-5 md:grid-cols-[auto,1fr]">
-                <a className="btn-primary w-fit" href="#catalogo">
-                  Monte seu negócio aqui
+                <a className="btn-primary w-fit" href="#monte-seu-sistema">
+                  Monte seu sistema
                 </a>
                 <p className="glass rounded-2xl p-4 text-sm leading-relaxed text-black/70 dark:text-white/70 sm:text-base">
-                  Explore o catálogo para escolher o tipo de negócio, personalizar a estética da marca e adicionar
-                  serviços de assistência, social media e suporte criativo.
+                  Fluxo estratégico da plataforma: tipo de sistema, nicho, estrutura digital, identidade visual,
+                  assistência e pré-visualização.
                 </p>
               </div>
             </div>
@@ -86,38 +77,14 @@ export default function Page() {
           </div>
         </section>
 
-        <section id="quem-somos" className="section">
+        <section id="monte-seu-sistema" className="section">
           <div className="container-x">
-            <h2 className="section-title">Quem <span className="accent">somos</span></h2>
+            <h2 className="section-title">
+              Monte seu <span className="accent">sistema</span>
+            </h2>
             <p className="section-desc">
-              Somos um estúdio de criação empresarial focado em transformar ideias em marcas estruturadas.
-              Desenvolvemos negócios pré-prontos, editáveis e personalizáveis para empreendedores que desejam acelerar
-              sua entrada no mercado.
-            </p>
-
-            <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
-              <Card
-                title="Criar"
-                desc="Desenvolvemos marcas do zero com nome, direção visual, proposta comercial e estrutura inicial para operação."
-              />
-              <Card
-                title="Editar"
-                desc="Adaptamos modelos de empresas para diferentes nichos, públicos, paletas, estilos e objetivos de mercado."
-              />
-              <Card
-                title="Reformar"
-                desc="Reposicionamos ideias, marcas e projetos para uma aparência mais moderna e comercialmente atraente."
-              />
-            </div>
-          </div>
-        </section>
-
-        <section id="catalogo" className="section">
-          <div className="container-x">
-            <h2 className="section-title"><span className="accent">Catálogo</span></h2>
-            <p className="section-desc">
-              Navegue pelo processo de criação. Escolha o tipo de negócio, defina a estilização e adicione serviços
-              complementares para montar uma marca alinhada ao seu objetivo.
+              Em vez de catálogo estático, use o construtor empresarial interativo da QO para montar sua estrutura
+              digital passo a passo.
             </p>
 
             <InteractiveCatalog />
