@@ -104,7 +104,7 @@ export default function Page() {
                 </div>
                 <a
                   className="btn-primary"
-                  href="https://wa.me/5527981717462?text=Ol%C3%A1%21%20Quero%20falar%20com%20um%20agente%20para%20iniciar%20um%20projeto."
+                  href="https://wa.me/5527933002825?text=Ol%C3%A1%21%20Quero%20falar%20com%20um%20agente%20para%20iniciar%20um%20projeto."
                   target="_blank"
                   rel="noreferrer"
                 >

@@ -92,7 +92,7 @@ export function InteractiveCatalog() {
       `- Modelo base: ${encodeURIComponent(sel.modelo ?? "(não definido)")}%0A%0A` +
       `Pode me orientar nos próximos passos?`;
 
-    return `https://wa.me/5527981717462?text=${msg}`;
+    return `https://wa.me/5527933002825?text=${msg}`;
   }, [sel.assist, sel.estrutura, sel.modelo, sel.nicho, sel.tipoSistema, sel.visual]);
 
   const progress = useMemo(() => {
