@@ -34,42 +34,20 @@ export default function Page() {
                 <a className="btn-primary w-fit" href="#monte-seu-sistema">
                   Monte seu sistema
                 </a>
-                <p className="glass rounded-2xl p-4 text-sm leading-relaxed text-black/70 dark:text-white/70 sm:text-base">
-                  Fluxo estratégico da plataforma: tipo de sistema, nicho, estrutura digital, identidade visual,
-                  assistência e pré-visualização.
-                </p>
               </div>
             </div>
 
             <div className="relative">
-              <div className="glass relative overflow-hidden rounded-[2.25rem]">
-                <div className="absolute inset-4 rounded-[1.7rem] border border-[color:var(--line)]" />
-
-                <div className="relative grid min-h-[420px] place-items-center px-8 sm:min-h-[520px] sm:px-10">
-                  <div className="text-center">
-                    <div className="mx-auto grid place-items-center">
-                      <img
-                        src="/image3.webp"
-                        alt="Logo Quality Originals"
-                        width={1200}
-                        height={1200}
-                        className="h-auto w-[380px] animate-float opacity-95 drop-shadow-[0_0_30px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_0_34px_rgba(255,255,255,0.18)] sm:w-[460px] lg:w-[560px]"
-                      />
-                    </div>
+              <div className="glass overflow-hidden rounded-2xl">
+                <div className="flex w-[300%] animate-slide">
+                  <div className="w-full px-6 py-5 text-sm leading-relaxed text-black/80 dark:text-white/90">
+                    Criamos empresas e marcas com base estratégica para quem quer empreender sem começar do zero.
                   </div>
-                </div>
-
-                <div className="glass absolute bottom-5 left-5 right-5 overflow-hidden rounded-2xl sm:bottom-6 sm:left-6 sm:right-6">
-                  <div className="flex w-[300%] animate-slide">
-                    <div className="w-full px-6 py-5 text-sm leading-relaxed text-black/80 dark:text-white/90">
-                      Criamos empresas e marcas com base estratégica para quem quer empreender sem começar do zero.
-                    </div>
-                    <div className="w-full px-6 py-5 text-sm leading-relaxed text-black/80 dark:text-white/90">
-                      Editamos conceito, identidade visual, tom e apresentação para adaptar cada projeto ao seu público.
-                    </div>
-                    <div className="w-full px-6 py-5 text-sm leading-relaxed text-black/80 dark:text-white/90">
-                      Reformamos ideias antigas em negócios modernos, profissionais e prontos para novas oportunidades.
-                    </div>
+                  <div className="w-full px-6 py-5 text-sm leading-relaxed text-black/80 dark:text-white/90">
+                    Editamos conceito, identidade visual, tom e apresentação para adaptar cada projeto ao seu público.
+                  </div>
+                  <div className="w-full px-6 py-5 text-sm leading-relaxed text-black/80 dark:text-white/90">
+                    Reformamos ideias antigas em negócios modernos, profissionais e prontos para novas oportunidades.
                   </div>
                 </div>
               </div>
