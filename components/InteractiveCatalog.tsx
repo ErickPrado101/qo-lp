@@ -3,12 +3,11 @@
 import { useMemo, useState } from "react";
 
 type BuilderSelections = {
-  tipoSistema: string | null;
-  nicho: string | null;
-  estrutura: string | null;
-  visual: string | null;
+  tipoSistema: string[];
+  nicho: string[];
+  estrutura: string[];
+  visual: string[];
   assist: string[];
-  modelo: string | null;
 };
 
 const SISTEMAS = ["Loja", "E-commerce", "Prestador de serviço"] as const;
@@ -34,7 +33,6 @@ const ASSIST = [
   "Manual da marca",
   "Consultoria visual"
 ] as const;
-const MODELOS = ["Minimal", "Luxury", "Bold"] as const;
 
 function OptionButton({
   selected,
@@ -73,40 +71,48 @@ function OptionButton({
 
 export function InteractiveCatalog() {
   const [sel, setSel] = useState<BuilderSelections>({
-    tipoSistema: null,
-    nicho: null,
-    estrutura: null,
-    visual: null,
-    assist: [],
-    modelo: null
+    tipoSistema: [],
+    nicho: [],
+    estrutura: [],
+    visual: [],
+    assist: []
   });
 
-  const whatsappHref = useMemo(() => {
-    const msg =
-      `Olá! Quero montar meu sistema com a Quality Originals:%0A` +
-      `- Tipo de sistema: ${encodeURIComponent(sel.tipoSistema ?? "(não definido)")}%0A` +
-      `- Nicho: ${encodeURIComponent(sel.nicho ?? "(não definido)")}%0A` +
-      `- Estrutura digital: ${encodeURIComponent(sel.estrutura ?? "(não definido)")}%0A` +
-      `- Estrutura visual: ${encodeURIComponent(sel.visual ?? "(não definido)")}%0A` +
-      `- Assistência: ${encodeURIComponent(sel.assist.length ? sel.assist.join(", ") : "(nenhuma)")}%0A` +
-      `- Modelo base: ${encodeURIComponent(sel.modelo ?? "(não definido)")}%0A%0A` +
-      `Pode me orientar nos próximos passos?`;
+  const canSend = Boolean(sel.tipoSistema.length && sel.nicho.length && sel.estrutura.length && sel.visual.length && sel.assist.length);
 
-    return `https://wa.me/5527933002825?text=${msg}`;
-  }, [sel.assist, sel.estrutura, sel.modelo, sel.nicho, sel.tipoSistema, sel.visual]);
+  const whatsappHref = useMemo(() => {
+    if (!canSend) return "";
+
+    const lines = [
+      "Olá! Quero montar meu sistema com a Quality Originals:",
+      `- Tipo de sistema: ${sel.tipoSistema.join(", ")}`,
+      `- Nicho: ${sel.nicho.join(", ")}`,
+      `- Estrutura digital: ${sel.estrutura.join(", ")}`,
+      `- Estrutura visual: ${sel.visual.join(", ")}`,
+      `- Assistência: ${sel.assist.join(", ")}`
+    ];
+
+    lines.push("", "Pode me orientar nos próximos passos?");
+
+    return `https://wa.me/5527933002825?text=${encodeURIComponent(lines.join("\n"))}`;
+  }, [canSend, sel.assist, sel.estrutura, sel.nicho, sel.tipoSistema, sel.visual]);
 
   const progress = useMemo(() => {
     let done = 0;
-    if (sel.tipoSistema) done += 1;
-    if (sel.nicho) done += 1;
-    if (sel.estrutura) done += 1;
-    if (sel.visual) done += 1;
+    if (sel.tipoSistema.length) done += 1;
+    if (sel.nicho.length) done += 1;
+    if (sel.estrutura.length) done += 1;
+    if (sel.visual.length) done += 1;
     if (sel.assist.length) done += 1;
-    if (sel.modelo) done += 1;
-    return Math.round((done / 6) * 100);
-  }, [sel.assist.length, sel.estrutura, sel.modelo, sel.nicho, sel.tipoSistema, sel.visual]);
+    return Math.round((done / 5) * 100);
+  }, [sel.assist.length, sel.estrutura.length, sel.nicho.length, sel.tipoSistema.length, sel.visual.length]);
 
-  const nichosDisponiveis = sel.tipoSistema ? NICHOS[sel.tipoSistema as (typeof SISTEMAS)[number]] : [];
+  const nichosDisponiveis = useMemo(() => {
+    if (!sel.tipoSistema.length) return [];
+
+    const all = sel.tipoSistema.flatMap((sistema) => NICHOS[sistema as (typeof SISTEMAS)[number]] ?? []);
+    return Array.from(new Set(all));
+  }, [sel.tipoSistema]);
 
   return (
     <div className="mt-10">
@@ -142,8 +148,19 @@ export function InteractiveCatalog() {
               {SISTEMAS.map((opt) => (
                 <OptionButton
                   key={opt}
-                  selected={sel.tipoSistema === opt}
-                  onClick={() => setSel((s) => ({ ...s, tipoSistema: opt, nicho: null, estrutura: null, visual: null, modelo: null }))}
+                  selected={sel.tipoSistema.includes(opt)}
+                  onClick={() =>
+                    setSel((s) => ({
+                      ...s,
+                      tipoSistema: s.tipoSistema.includes(opt)
+                        ? s.tipoSistema.filter((x) => x !== opt)
+                        : [...s.tipoSistema, opt],
+                      nicho: [],
+                      estrutura: [],
+                      visual: [],
+                      assist: []
+                    }))
+                  }
                 >
                   {opt}
                 </OptionButton>
@@ -151,7 +168,7 @@ export function InteractiveCatalog() {
             </div>
           </section>
 
-          {sel.tipoSistema ? (
+          {sel.tipoSistema.length ? (
             <section id="nicho-atuacao">
               <h3 className="text-2xl font-extrabold uppercase tracking-[-0.04em] text-black/90 dark:text-white">
                 2 · Nicho de atuação
@@ -162,7 +179,19 @@ export function InteractiveCatalog() {
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {nichosDisponiveis.map((opt) => (
-                  <OptionButton key={opt} selected={sel.nicho === opt} onClick={() => setSel((s) => ({ ...s, nicho: opt }))}>
+                  <OptionButton
+                    key={opt}
+                    selected={sel.nicho.includes(opt)}
+                    onClick={() =>
+                      setSel((s) => ({
+                        ...s,
+                        nicho: s.nicho.includes(opt) ? s.nicho.filter((x) => x !== opt) : [...s.nicho, opt],
+                        estrutura: [],
+                        visual: [],
+                        assist: []
+                      }))
+                    }
+                  >
                     {opt}
                   </OptionButton>
                 ))}
@@ -170,7 +199,7 @@ export function InteractiveCatalog() {
             </section>
           ) : null}
 
-          {sel.nicho ? (
+          {sel.nicho.length ? (
             <section id="estrutura-digital">
               <h3 className="text-2xl font-extrabold uppercase tracking-[-0.04em] text-black/90 dark:text-white">
                 3 · Estrutura digital
@@ -181,7 +210,18 @@ export function InteractiveCatalog() {
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {ESTRUTURAS.map((opt) => (
-                  <OptionButton key={opt} selected={sel.estrutura === opt} onClick={() => setSel((s) => ({ ...s, estrutura: opt }))}>
+                  <OptionButton
+                    key={opt}
+                    selected={sel.estrutura.includes(opt)}
+                    onClick={() =>
+                      setSel((s) => ({
+                        ...s,
+                        estrutura: s.estrutura.includes(opt) ? s.estrutura.filter((x) => x !== opt) : [...s.estrutura, opt],
+                        visual: [],
+                        assist: []
+                      }))
+                    }
+                  >
                     {opt}
                   </OptionButton>
                 ))}
@@ -189,7 +229,7 @@ export function InteractiveCatalog() {
             </section>
           ) : null}
 
-          {sel.estrutura ? (
+          {sel.estrutura.length ? (
             <section id="estrutura-visual">
               <h3 className="text-2xl font-extrabold uppercase tracking-[-0.04em] text-black/90 dark:text-white">
                 4 · Estrutura visual
@@ -200,7 +240,17 @@ export function InteractiveCatalog() {
 
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {VISUAIS.map((opt) => (
-                  <OptionButton key={opt} selected={sel.visual === opt} onClick={() => setSel((s) => ({ ...s, visual: opt }))}>
+                  <OptionButton
+                    key={opt}
+                    selected={sel.visual.includes(opt)}
+                    onClick={() =>
+                      setSel((s) => ({
+                        ...s,
+                        visual: s.visual.includes(opt) ? s.visual.filter((x) => x !== opt) : [...s.visual, opt],
+                        assist: []
+                      }))
+                    }
+                  >
                     {opt}
                   </OptionButton>
                 ))}
@@ -208,7 +258,7 @@ export function InteractiveCatalog() {
             </section>
           ) : null}
 
-          {sel.visual ? (
+          {sel.visual.length ? (
             <section id="assistencia-criativa">
               <h3 className="text-2xl font-extrabold uppercase tracking-[-0.04em] text-black/90 dark:text-white">
                 5 · Assistência criativa
@@ -239,36 +289,16 @@ export function InteractiveCatalog() {
             </section>
           ) : null}
 
-          {sel.visual ? (
-            <section id="modelo-base">
-              <h3 className="text-2xl font-extrabold uppercase tracking-[-0.04em] text-black/90 dark:text-white">
-                6 · Modelo visual editável
-              </h3>
-              <p className="mt-3 max-w-3xl text-sm leading-relaxed text-black/65 dark:text-white/65 md:text-base">
-                Escolha o modelo base para carregar sua pré-visualização inicial.
-              </p>
-
-              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                {MODELOS.map((opt) => (
-                  <OptionButton key={opt} selected={sel.modelo === opt} onClick={() => setSel((s) => ({ ...s, modelo: opt }))}>
-                    {opt}
-                  </OptionButton>
-                ))}
-              </div>
-            </section>
-          ) : null}
-
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <button
               type="button"
               onClick={() =>
                 setSel({
-                  tipoSistema: null,
-                  nicho: null,
-                  estrutura: null,
-                  visual: null,
-                  assist: [],
-                  modelo: null
+                  tipoSistema: [],
+                  nicho: [],
+                  estrutura: [],
+                  visual: [],
+                  assist: []
                 })
               }
               className="rounded-2xl border border-black/10 bg-white/70 px-5 py-3 text-xs font-extrabold uppercase tracking-[0.12em] text-black/70 transition hover:border-black/25 hover:bg-white/90 dark:border-white/10 dark:bg-black/30 dark:text-white/80 dark:hover:bg-black/45"
@@ -276,9 +306,19 @@ export function InteractiveCatalog() {
               Recomeçar fluxo
             </button>
 
-            <a className="btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
-              Enviar para nosso agente
-            </a>
+            {canSend ? (
+              <a className="btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
+                Enviar para nosso agente
+              </a>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="cursor-not-allowed rounded-2xl border border-black/10 bg-black/5 px-5 py-3 text-xs font-extrabold uppercase tracking-[0.12em] text-black/45 dark:border-white/10 dark:bg-white/[0.04] dark:text-white/45"
+              >
+                Complete o fluxo para enviar
+              </button>
+            )}
           </div>
         </div>
       </div>
